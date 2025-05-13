@@ -1,31 +1,22 @@
-# Use an official Python image as the base
-FROM python:3.11
+# Use official Python image
+FROM python:3.12-slim
 
-# Set environment variables
-ENV PYTHONUNBUFFERED=1 \
-    PIP_NO_CACHE_DIR=off \
-    PIPENV_VENV_IN_PROJECT=1
+# Set environment to non-interactive
+ENV DEBIAN_FRONTEND=noninteractive
 
-# Set the working directory in the container
-WORKDIR /app
+# Set working directory
+WORKDIR /code
 
-# Install system dependencies
+# Install system dependencies required for mysqlclient
 RUN apt-get update && apt-get install -y \
-    libpq-dev gcc curl && \
-    rm -rf /var/lib/apt/lists/*
+    default-libmysqlclient-dev \
+    build-essential \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copy Pipenv files first (to leverage Docker's caching mechanism)
-COPY Pipfile Pipfile.lock /app/
+# Install Python dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Install dependencies via Pipenv
-#RUN pip install --upgrade pip && pip install pipenv && pipenv install --deploy --system
-RUN pip install --upgrade pip && pip install pipenv && pipenv lock --clear && pipenv install --deploy --system
-
-# Copy the entire project
-COPY . /app/
-
-# Expose the port Django runs on
-EXPOSE 8000
-
-# Run the application
-CMD ["gunicorn", "tms_backend.wsgi:application", "--bind", "0.0.0.0:8000"]
+# Copy project files
+COPY . .
