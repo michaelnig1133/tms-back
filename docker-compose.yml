@@ -5,7 +5,8 @@ services:
     # build: .
     image: tselot24/tms-api-main-web:latest
     container_name: tms_backend
-    command: gunicorn tms_backend.wsgi:application --bind 0.0.0.0:8000
+    #command: gunicorn tms_backend.wsgi:application --bind 0.0.0.0:8000
+    command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/app
     ports:
