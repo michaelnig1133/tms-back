@@ -2,7 +2,13 @@
 FROM python:3.11
 
 # Set environment to non-interactive
-ENV DEBIAN_FRONTEND=noninteractive
+#ENV DEBIAN_FRONTEND=noninteractive
+
+# Set environment variables
+ENV PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=off \
+    PIPENV_VENV_IN_PROJECT=1
+
 
 # Set working directory
 WORKDIR /code
