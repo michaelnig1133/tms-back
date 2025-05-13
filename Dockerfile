@@ -11,7 +11,8 @@ ENV PYTHONUNBUFFERED=1 \
 
 
 # Set working directory
-WORKDIR /code
+WORKDIR  /code/tms_backend
+
 
 # Install system dependencies required for mysqlclient
 RUN apt-get update && apt-get install -y \
