@@ -11,7 +11,7 @@ ENV PYTHONUNBUFFERED=1 \
 
 
 # Set working directory
-WORKDIR  /code/tms_backend
+WORKDIR  /code
 
 
 # Install system dependencies required for mysqlclient
